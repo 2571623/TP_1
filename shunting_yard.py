@@ -58,7 +58,39 @@ def infix_to_postfix(tokens: list[str]) -> list[str]:
         if stack_operateur[-1] in "()":
             raise ValueError("Parenthèses non appariées : ( sans )")
         output.append(stack_operateur.pop())
-
+    return output
 
 def evaluate_postfix(tokens: list[str]) -> float:
-    wdw
+    
+    stack: list[float] = []
+    for token in tokens:
+        if token in ("+", "-", "*", "/"):
+            if len(stack) < 2:
+                raise ValueError(f"Expression invalide : pas assez d'opérandes pour '{token}'")
+            
+            b = stack.pop()  
+            a = stack.pop()  
+            
+            if token == "+":
+                resultat = a + b
+            elif token == "-":
+                resultat = a - b
+            elif token == "*":
+                resultat = a * b
+            else:
+                if b == 0:
+                    raise ZeroDivisionError("Division par zéro")
+                resultat = a / b
+            
+            stack.append(resultat)
+        else:
+            try:
+                stack.append(float(token))
+            except ValueError:
+                raise ValueError(f"Token invalide : '{token}'")
+    
+    # Vérification finale : la pile doit contenir exactement 1 valeur
+    if len(stack) != 1:
+        raise ValueError("Expression postfix mal formée")
+    
+    return stack[0]
