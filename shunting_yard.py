@@ -3,7 +3,7 @@ def tokenize(expression: str) -> list[str]:
     i = 0
     
     while i < len(expression):
-        if expression[i] == "":
+        if expression[i].isspace():
             i += 1
             continue 
         elif expression[i].isdigit() or expression[i] == ".":
@@ -16,7 +16,7 @@ def tokenize(expression: str) -> list[str]:
                 i += 1
             nombre = (expression[start:i])
             if nombre.count(".") > 1:
-                raise ValueError(f"Nombre mal formé : {nombre}")
+                raise ValueError("Nombre mal formé : {nombre")
             tokens.append(nombre)
         elif expression[i] in "+-*/()": 
             tokens.append(expression[i])
